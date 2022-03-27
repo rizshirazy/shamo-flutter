@@ -44,9 +44,18 @@ class ProfilePage extends StatelessWidget {
                     ],
                   ),
                 ),
-                Image.asset(
-                  'assets/button_exit.png',
-                  width: 20,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      '/sign-in',
+                      (route) => false,
+                    );
+                  },
+                  child: Image.asset(
+                    'assets/button_exit.png',
+                    width: 20,
+                  ),
                 )
               ],
             ),
@@ -94,7 +103,12 @@ class ProfilePage extends StatelessWidget {
                   fontWeight: semibold,
                 ),
               ),
-              menuItem('Edit Profile'),
+              GestureDetector(
+                child: menuItem('Edit Profile'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/edit-profile');
+                },
+              ),
               menuItem('Your Orders'),
               menuItem('Help'),
               SizedBox(height: 30),
