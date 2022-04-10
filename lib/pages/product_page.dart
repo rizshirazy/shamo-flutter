@@ -294,7 +294,6 @@ class _ProductPageState extends State<ProductPage> {
                 ],
               ),
             ),
-
             // NOTE: DESCRIPTION
             Container(
               width: double.infinity,
@@ -323,7 +322,6 @@ class _ProductPageState extends State<ProductPage> {
                 ],
               ),
             ),
-
             // NOTE: FAMILIAR SHOES
             Container(
               width: double.infinity,
@@ -356,7 +354,6 @@ class _ProductPageState extends State<ProductPage> {
                 ],
               ),
             ),
-
             // NOTE: BUTTONS
             Container(
               width: double.infinity,
