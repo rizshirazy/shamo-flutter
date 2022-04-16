@@ -6,11 +6,11 @@ class ProductModel {
   late String name;
   late double price;
   late String description;
-  late String tags;
+  late String? tags;
   late CategoryModel category;
   late DateTime createdAt;
   late DateTime updatedAt;
-  late List<GalleryModel> galleries;
+  late List<GalleryModel>? galleries;
 
   ProductModel(
     this.id,
@@ -34,7 +34,7 @@ class ProductModel {
     createdAt = DateTime.parse(json['created_at']);
     updatedAt = DateTime.parse(json['updated_at']);
     galleries = json['galleries']
-        .map((gallery) => GalleryModel.fromJson(gallery))
+        .map<GalleryModel>((gallery) => GalleryModel.fromJson(gallery))
         .toList();
   }
 
@@ -46,7 +46,7 @@ class ProductModel {
       'description': description,
       'tags': tags,
       'catogory': category.toJson(),
-      'galleries': galleries.map((gallery) => gallery.toJson()).toList(),
+      'galleries': galleries?.map((gallery) => gallery.toJson()).toList(),
       'created_at': createdAt.toString(),
       'updated_at': updatedAt.toString(),
     };
