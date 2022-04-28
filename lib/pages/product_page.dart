@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shamo/models/product_model.dart';
+import 'package:shamo/pages/detail_chat_page.dart';
 import 'package:shamo/providers/cart_provider.dart';
 import 'package:shamo/providers/wishlist_provider.dart';
 import 'package:shamo/theme.dart';
@@ -223,14 +224,14 @@ class _ProductPageState extends State<ProductPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.product.name,
+                          widget.product.name!,
                           style: primaryTextStyle.copyWith(
                             fontSize: 18,
                             fontWeight: semibold,
                           ),
                         ),
                         Text(
-                          widget.product.category.name,
+                          widget.product.category!.name,
                           style: secondaryTextStyle.copyWith(fontSize: 12),
                         )
                       ],
@@ -321,7 +322,7 @@ class _ProductPageState extends State<ProductPage> {
                   ),
                   SizedBox(height: 14),
                   Text(
-                    widget.product.description,
+                    widget.product.description!,
                     style: subtitleTextStyle.copyWith(
                       fontWeight: light,
                     ),
@@ -370,7 +371,12 @@ class _ProductPageState extends State<ProductPage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, '/detail-chat');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailChatPage(widget.product),
+                        ),
+                      );
                     },
                     child: Container(
                       width: 54,

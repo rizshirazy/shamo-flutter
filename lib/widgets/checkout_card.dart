@@ -36,7 +36,7 @@ class CheckoutCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  cart.product.name,
+                  cart.product.name!,
                   style: primaryTextStyle.copyWith(fontWeight: semibold),
                   overflow: TextOverflow.ellipsis,
                 ),
