@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shamo/models/product_model.dart';
+import 'package:shamo/providers/auth_provider.dart';
+import 'package:shamo/services/message_service.dart';
 import 'package:shamo/theme.dart';
 import 'package:shamo/widgets/chat_bubble.dart';
 
@@ -12,8 +15,26 @@ class DetailChatPage extends StatefulWidget {
 }
 
 class _DetailChatPageState extends State<DetailChatPage> {
+  TextEditingController messageController = TextEditingController(text: '');
+
   @override
   Widget build(BuildContext context) {
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
+
+    handleAddMessage() async {
+      await MessageService().addMessage(
+        user: authProvider.user,
+        isFromUser: true,
+        message: messageController.text,
+        product: widget.product,
+      );
+
+      setState(() {
+        widget.product = UninitializedProductModel();
+        messageController.text = '';
+      });
+    }
+
     PreferredSizeWidget header() {
       return PreferredSize(
         child: Container(
@@ -115,56 +136,69 @@ class _DetailChatPageState extends State<DetailChatPage> {
     }
 
     Widget chatInput() {
-      return Container(
-        margin: EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            widget.product is UninitializedProductModel
-                ? SizedBox()
-                : productPreview(),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 45,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16,
-                    ),
-                    decoration: BoxDecoration(
-                      color: bgColor4,
-                      borderRadius: BorderRadius.circular(
-                        12,
+      return SingleChildScrollView(
+        reverse: true,
+        child: Container(
+          margin: EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              widget.product is UninitializedProductModel
+                  ? SizedBox()
+                  : productPreview(),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: 45,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16,
                       ),
-                    ),
-                    child: Center(
-                      child: TextFormField(
-                        style: primaryTextStyle,
-                        decoration: InputDecoration.collapsed(
-                          hintText: 'Type Message...',
-                          hintStyle: subtitleTextStyle,
+                      decoration: BoxDecoration(
+                        color: bgColor4,
+                        borderRadius: BorderRadius.circular(
+                          12,
+                        ),
+                      ),
+                      child: Center(
+                        child: TextFormField(
+                          style: primaryTextStyle,
+                          controller: messageController,
+                          decoration: InputDecoration.collapsed(
+                            hintText: 'Type Message...',
+                            hintStyle: subtitleTextStyle,
+                          ),
                         ),
                       ),
                     ),
                   ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  GestureDetector(
+                    onTap: handleAddMessage,
+                    child: Image.asset(
+                      'assets/button_send.png',
+                      width: 45,
+                    ),
+                  )
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
                 ),
-                SizedBox(
-                  width: 10,
-                ),
-                Image.asset(
-                  'assets/button_send.png',
-                  width: 45,
-                )
-              ],
-            ),
-          ],
+              )
+            ],
+          ),
         ),
       );
     }
 
     Widget content() {
       return ListView(
+        reverse: true,
         padding: EdgeInsets.symmetric(
           horizontal: defaultMargin,
         ),
@@ -187,6 +221,7 @@ class _DetailChatPageState extends State<DetailChatPage> {
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: bgColor3,
       appBar: header(),
       bottomNavigationBar: chatInput(),
